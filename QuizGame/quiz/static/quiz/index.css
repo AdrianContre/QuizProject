@@ -1,0 +1,47 @@
+body {
+    background: linear-gradient(45deg,#FD84A3,#FCCB46);
+    background-size: 400% 400%;
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.custom-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.play-button {
+    font-size: 2rem;
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+/* Estilo para el menú desplegable */
+.choose-mode {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    background-color: #0275d8;
+}
