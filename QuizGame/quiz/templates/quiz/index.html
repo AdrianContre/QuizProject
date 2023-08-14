@@ -17,6 +17,14 @@
 </head>
 
 <body>
+    <div class="d-flex flex-row-reverse">
+        <div class="p-2">
+            <a class="btn btn-danger" href="{% url 'logout' %}">Logout</a>
+        </div>
+        <div class="p-2">
+            <a class="btn btn-success" href="{% url 'leaderboard' %}">Leaderboard</a>
+        </div>
+    </div>
     <div class="custom-container">
         <div>
             <h1>Welcome to Quiz Game!!</h1>

@@ -15,10 +15,8 @@ import html
 from .models import User,Questions,IncorrectAnswers,Score
 
 # Create your views here.
-
 @login_required(login_url="login")
 def index(request):
-    print("hola")
     return render(request,"quiz/index.html")
 
 def login_view(request):
@@ -129,16 +127,12 @@ def saveScore(request):
         response = json.loads(data)
         score = response["score"]
         try:
-            print("estoy en el try")
-            print(player)
             s = Score.objects.get(user=player)
-            print(s)
             if s.score > score:
                 s.score = score
                 s.save()
             result = "Saved after getting the Score object"
         except Score.DoesNotExist:
-            print("estoy en el except")
             s = Score(user=player,score=score)
             s.save()
             result = "Saved after creating the new object"
@@ -146,6 +140,12 @@ def saveScore(request):
         return JsonResponse({
             "data": result
         })
+
+def leaderboard(request):
+    s = Score.objects.all().order_by("score")
+    return render(request,"quiz/leaderboard.html",{
+        "scores": s
+    })
 
 
     

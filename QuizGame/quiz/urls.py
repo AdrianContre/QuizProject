@@ -10,4 +10,5 @@ urlpatterns = [
     path("saveQuestion", views.saveQuestion,name="saveQuestion"),
     path("get/<int:id>",views.getAnswer,name="getAnswer"),
     path("saveScore",views.saveScore,name="saveScore"),
+    path("leaderboard",views.leaderboard,name="leaderboard")
 ]

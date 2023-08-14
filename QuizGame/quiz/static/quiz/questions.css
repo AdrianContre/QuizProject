@@ -78,7 +78,7 @@ main{
 }
 
 .game-options-container{
-    width: 80%;
+    width: 100%;
     height: 12rem;
     display: flex;
     flex-wrap: wrap;

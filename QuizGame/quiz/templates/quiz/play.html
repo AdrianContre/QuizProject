@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>Play</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'quiz/questions.css' %}">
@@ -10,6 +11,24 @@
     </head>
     <body onload="NextQuestion('{{mode}}')">
         <main>
+            <div class="modal-container" id="score-modal">
+
+                <div class="modal-content-container">
+    
+                    <h1 id="header-details">Game over</h1>
+    
+                    <h1 class="grade-details">
+
+                    </h1>
+    
+                    <form class="modal-button-container" action="{% url 'index' %}" method="POST">
+                        {% csrf_token %}
+                        <button>Continue</button>
+                    </form>
+    
+                </div>
+            </div>
+
             <div class="game-quiz-container">
     
                 <div class="game-details-container">
@@ -62,7 +81,7 @@
                 </div>
     
                 <div class="next-button-container">
-                    <button id="next-question-button" onclick="checkAnswer()">Next Question</button>
+                    <button id="next-question-button" onclick="checkAnswer('{{mode}}')">Next Question</button>
                 </div>
     
             </div>

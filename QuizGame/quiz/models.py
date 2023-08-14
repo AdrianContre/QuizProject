@@ -1,25 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from datetime import datetime
 
 
 # Create your models here.
 class User(AbstractUser):
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='quiz_users',
-        blank=True,
-        help_text='The groups this user belongs to.',
-        verbose_name='groups',
-    )
-
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='quiz_users',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
-    )
+    pass
 
 class Questions(models.Model):
     category = models.CharField(max_length=64)
@@ -40,5 +25,6 @@ class Score(models.Model):
 
     def __str__(self):
         return f"User {self.user.username} has scored {self.score} points"
+
 
 

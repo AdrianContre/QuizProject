@@ -41,6 +41,7 @@ function shuffleAnswers(object) {
 
 
 function NextQuestion(mode) {
+    console.log("Siguiente pregunta")
     let questionObject = undefined;
     //getting the question and putting it into the html
     fetch(`https://opentdb.com/api.php?amount=1&difficulty=${mode}&type=multiple`)
@@ -79,52 +80,62 @@ function NextQuestion(mode) {
     
 }
 
-function checkAnswer() {
-    const optionSelected = getSelectedRadioButtonValue();
-    if (optionSelected === null) {
-        document.getElementById('option-modal').style.display = "flex"
+function checkAnswer(mode) {
+    const selectedOption = getSelectedRadioButtonValue();
+
+    if (selectedOption === null) {
+        // Mostrar un modal o mensaje de error al usuario
+        document.getElementById('option-modal').style.display = "flex";
+        return; // Salir de la función si no hay opción seleccionada
     }
-    else {
-        fetch(`/get/${currentIdQuestion}`)
+
+    fetch(`/get/${currentIdQuestion}`)
         .then(response => response.json())
         .then(result => {
-            correct_answer = result["correct_answer"];
-            const parsedDoc = parser.parseFromString(correct_answer, 'text/html');
+            const correct_answer = result["correct_answer"];
+            const parsedDoc = new DOMParser().parseFromString(correct_answer, 'text/html');
 
-            // Obtener el contenido decodificado
             const decodedContent = parsedDoc.documentElement.textContent;
-            console.log(decodedContent)
-            if(decodedContent == optionSelected) {
+            console.log(decodedContent);
+            if (decodedContent === selectedOption) {
                 score++;
-                document.getElementById("player-score").innerHTML = score
-            }
-            else {
-                //post de la puntuación obtenida por el jugador y vuelves a la pantalla de play, con un pequeño modal 
-                return fetch("saveScore", {
+                document.getElementById("player-score").textContent = score;
+                setTimeout(() => {
+                }, 1000)
+                NextQuestion(mode)
+                const radioButtons = document.getElementsByName("option");
+                for (const radioButton of radioButtons) {
+                    radioButton.checked = false;
+                }
+                const next = document.getElementById("next-question-button")
+                next.style.background = "none";
+
+            } else {
+                fetch("saveScore", {
                     method: "POST",
-                    headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
+                    headers: {
+                        "Content-type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken")
+                    },
                     body: JSON.stringify({
                         "score": score
                     })
                 })
                 .then(response => response.json())
                 .then(result => {
-                    console.log(result)
+                    console.log(result);
+                    document.getElementById('score-modal').style.display = "flex";
+                    document.querySelector(".grade-details").innerHTML = `You have scored ${score} points <br> The correct answer was ${decodedContent}`
+                    console.log(document.querySelector(".grade-details").innerHTML)
                     score = 0;
                     currentIdQuestion = 0;
-                    return fetch("/", {
-                        method: 'GET',
-                      })
-                      .catch(error => {
-                        console.error('Error:', error);
-                      });
-                      
                 })
                 .catch(error => {
-                    console.log(error)
-                })
+                    console.log(error);
+                });
             }
         })
-    }
-
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
